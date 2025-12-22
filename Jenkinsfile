@@ -1,7 +1,7 @@
 pipeline {
     agent { 
         node {
-            label 'docker-agent-aphine'
+            label 'docker-agent-alphine'
             }
       }
     stages {
