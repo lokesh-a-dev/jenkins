@@ -1,36 +1,36 @@
 pipeline {
-    agent { 
-        node {
-            label 'docker-agent-python'
-            }
-      }
+    agent any
+
     stages {
+
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
         stage('Build') {
             steps {
-                echo "Building.."
                 sh '''
                 cd myapp
-                pip install -r requirements.txt
+                pip3 install -r requirements.txt
                 '''
             }
         }
+
         stage('Test') {
             steps {
-                echo "Testing.."
                 sh '''
                 cd myapp
                 python3 hello.py
-                python3 hello.py --name=Lokesh 
-                
+                python3 hello.py --name=Lokesh
                 '''
             }
         }
+
         stage('Deliver') {
             steps {
-                echo 'Deliver....'
-                sh '''
-                echo "doing delivery stuff.."
-                '''
+                echo 'Deliver stage completed'
             }
         }
     }
