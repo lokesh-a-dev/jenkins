@@ -9,29 +9,27 @@ pipeline {
             }
         }
 
-        stage('Build') {
+        stage('Build Docker Image') {
             steps {
                 sh '''
-                cd myapp
-                pip3 install -r requirements.txt
+                docker build -t myapp-python .
                 '''
             }
         }
 
-        stage('Test') {
+        stage('Run App') {
             steps {
                 sh '''
-                cd myapp
-                python3 hello.py
-                python3 hello.py --name=Lokesh
+                docker run --rm myapp-python
+                docker run --rm myapp-python python hello.py --name=Lokesh
                 '''
             }
         }
+    }
 
-        stage('Deliver') {
-            steps {
-                echo 'Deliver stage completed'
-            }
+    post {
+        always {
+            sh 'docker system prune -f'
         }
     }
 }
